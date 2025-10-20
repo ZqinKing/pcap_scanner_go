@@ -179,7 +179,7 @@ func bytesToUint32(b []byte) uint32 {
 }
 
 // resolveDestMAC 解析目标 IP 的目的 MAC 地址
-func resolveDestMAC(ifaceName string, destIP net.IP) (net.HardwareAddr, error) {
+func resolveDestMAC(destIP net.IP) (net.HardwareAddr, error) {
 	// 1. 获取下一跳 IP
 	nextHopIP, err := resolveNextHopIP(destIP)
 	if err != nil {

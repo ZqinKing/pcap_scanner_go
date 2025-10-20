@@ -62,7 +62,7 @@ func sendPackets(wg *sync.WaitGroup, ifaceName string, srcIP net.IP, targetIPs [
 
 	for _, targetIP := range targetIPs {
 		// 解析目标 MAC 地址
-		destMAC, err := resolveDestMAC(ifaceName, targetIP)
+		destMAC, err := resolveDestMAC(targetIP)
 		if err != nil {
 			log.Printf("解析目标 IP %s 的 MAC 地址时出错: %v, 跳过此目标。", targetIP.String(), err)
 			continue
