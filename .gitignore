@@ -1,0 +1,26 @@
+# Binaries for programs
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binaries
+*-test
+*.test
+
+# Output of 'go build'
+*.out
+
+# Dependency directories (golang can manage these)
+vendor/
+
+# IDE specific files
+.idea/
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# pcap capture files
+capture_*.pcap
