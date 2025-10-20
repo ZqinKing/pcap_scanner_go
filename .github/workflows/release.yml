@@ -1,0 +1,50 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 允许工作流创建/删除 Release 和 Tag
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get Version Tag
+        id: get_version
+        run: echo "TAG=$(date +v%y.%m.%d)" >> $GITHUB_OUTPUT
+
+      - name: Run build script
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Handle Existing Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.get_version.outputs.TAG }}
+        run: |
+          # 检查 Release 是否存在
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release '$TAG' found. Deleting..."
+            # 删除 Release
+            gh release delete "$TAG" --yes
+            # 删除 Git 标签
+            git push origin --delete "$TAG"
+            echo "Deleted release and tag '$TAG'."
+          else
+            echo "Release '$TAG' not found. Proceeding to create."
+          fi
+
+      - name: Create New Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.get_version.outputs.TAG }}
+        run: |
+          gh release create "$TAG" \
+            --title "Release $TAG" \
+            --notes "Automated release created on $(date)" \
+            ./pcap_scanner
