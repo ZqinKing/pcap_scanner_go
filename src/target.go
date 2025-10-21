@@ -24,8 +24,8 @@ import (
 	"strings"
 )
 
-// parseTargetSpec 解析目标IP规范 (CIDR, 范围, 或单个IP)
-func parseTargetSpec(spec string) ([]net.IP, error) {
+// parseSingleTargetSpec 解析单个目标IP规范 (CIDR, 范围, 或单个IP)
+func parseSingleTargetSpec(spec string) ([]net.IP, error) {
 	var ips []net.IP
 
 	if strings.Contains(spec, "/") { // CIDR 格式
@@ -65,6 +65,25 @@ func parseTargetSpec(spec string) ([]net.IP, error) {
 		ips = append(ips, ip)
 	}
 	return ips, nil
+}
+
+// parseTargetSpec 解析目标IP规范，支持通过分号分隔的多个规范
+func parseTargetSpec(spec string) ([]net.IP, error) {
+	var allIPs []net.IP
+	specs := strings.Split(spec, ";")
+
+	for _, s := range specs {
+		s = strings.TrimSpace(s)
+		if s == "" {
+			continue
+		}
+		ips, err := parseSingleTargetSpec(s)
+		if err != nil {
+			return nil, err
+		}
+		allIPs = append(allIPs, ips...)
+	}
+	return allIPs, nil
 }
 
 // inc 递增IP地址

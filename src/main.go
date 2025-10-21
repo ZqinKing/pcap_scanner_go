@@ -32,7 +32,7 @@ var version = "dev"
 // 命令行参数的全局变量
 var (
 	srcIPStr   = flag.String("srcIP", "", "源IP地址 (IPv4 或 IPv6)")
-	targetSpec = flag.String("target", "", "目标IP地址，支持CIDR (10.0.0.0/24), 范围 (10.0.0.1-10.0.0.100), 或单个IP (10.0.0.1) 格式")
+	targetSpec = flag.String("target", "", "目标IP地址，支持CIDR (10.0.0.0/24), 范围 (10.0.0.1-10.0.0.100), 或单个IP (10.0.0.1) 格式。多个目标请用分号分隔 (例如: \"10.0.1.0/24;192.168.1.0-192.168.1.2;172.16.0.1\")。注意：当使用分号分隔多个目标时，请务必将整个参数值用引号括起来。")
 	pcapFile   = flag.String("pcap", "", "用作报文模板的pcap文件路径")
 	ifaceName  = flag.String("iface", "", "用于发送和接收报文的网络接口 (例如: eth0)")
 	capture    = flag.Bool("capture", false, "启用响应捕获，并将匹配的响应保存到带时间戳的pcap文件中")
