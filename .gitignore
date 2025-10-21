@@ -24,3 +24,4 @@ Thumbs.db
 
 # pcap capture files
 capture_*.pcap
+pcap_scanner

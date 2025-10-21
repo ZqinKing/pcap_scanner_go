@@ -57,7 +57,9 @@ sudo ./pcap_scanner_go -pcap template.pcap -target 192.168.1.1 -iface eth0 -pps 
 ./pcap_scanner_go -version
 ```
 
-## 如何编译
+## 编译
+
+### 本地编译
 
 请确保你的系统已安装 Docker。
 
@@ -67,4 +69,9 @@ sudo ./pcap_scanner_go -pcap template.pcap -target 192.168.1.1 -iface eth0 -pps 
 ```
 
 构建脚本将会在 Docker 容器中编译项目，并将生成的可执行文件 `pcap_scanner` 拷贝到当前目录。
-该脚本会自动注入当前日期的版本信息 (例如 `v25.10.20`)。
+
+### GitHub Actions 编译
+
+本项目已配置 GitHub Actions 自动编译。最新版本可通过 [Releases 页面](https://github.com/ZqinKing/pcap_scanner_go/releases) 直接下载。
+
+如果您 Fork 本项目，该编译流程同样会在您的仓库中生效。对 `master` 分支的任何推送都将触发 Action，并在您自己仓库的 Releases 页面中生成可执行文件。
