@@ -34,7 +34,9 @@ func parseTargetSpec(spec string) ([]net.IP, error) {
 			return nil, fmt.Errorf("无效的CIDR格式: %w", err)
 		}
 		for ip := ip.Mask(ipNet.Mask); ipNet.Contains(ip); inc(ip) {
-			ips = append(ips, net.IP(ip))
+			newIP := make(net.IP, len(ip))
+			copy(newIP, ip)
+			ips = append(ips, newIP)
 		}
 	} else if strings.Contains(spec, "-") { // IP 范围格式
 		parts := strings.Split(spec, "-")
@@ -51,7 +53,9 @@ func parseTargetSpec(spec string) ([]net.IP, error) {
 		}
 
 		for ip := startIP; bytesCompare(ip, endIP) <= 0; inc(ip) {
-			ips = append(ips, net.IP(ip))
+			newIP := make(net.IP, len(ip))
+			copy(newIP, ip)
+			ips = append(ips, newIP)
 		}
 	} else { // 单个IP格式
 		ip := net.ParseIP(spec)
